@@ -11,9 +11,9 @@ def creat_vectorstore(chunks):
 
     return vectorstore
 
-def create_conversation(vectorsote):
+def create_conversation(vectorstore):
     llm = HuggingFaceHub(repor_id = 'google/flan-t5-large', model_kwargs={
-        "max+length":512,
+        "max_length":512,
         "temperature": 0.1
     })
 
@@ -21,7 +21,7 @@ def create_conversation(vectorsote):
 
     conversation_chain = ConversationalRetrievalChain.from_llm(
         llm=llm,
-        retriever = vectorsote.as_retriever(),
+        retriever = vectorstore.as_retriever(),
         memory=memory 
         )
     
