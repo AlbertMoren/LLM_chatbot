@@ -1,5 +1,5 @@
 import streamlit as st
-from utills import p_embeddings, text
+from utills import chatbot, text
 
 def main():
     st.set_page_config(page_title="Pergunte para seus PDF",page_icon=':books:')
@@ -13,8 +13,9 @@ def main():
 
             chunks = text.creat_text_chunks(all_files_text)
 
-            vectorstore = p_embeddings.create_vectorstore(chunks)
+            vectorstore = chatbot.create_vectorstore(chunks)
 
+            conversation = chatbot.create_conversation(vectorstore)
             
 
 if __name__ == '__main__':
