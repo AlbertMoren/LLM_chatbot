@@ -2,6 +2,9 @@ import streamlit as st
 from streamlit_chat import message
 from utills import chatbot, text
 
+import os
+from dotenv import load_dotenv
+
 def main():
     st.set_page_config(page_title="Pergunte para seus PDF",page_icon=':books:')
 
@@ -15,12 +18,12 @@ def main():
     if (userquestion):
         response = st.session_state.conversation(userquestion)['chat_hystory'] 
 
-        for i,text in enumerate(response):
+        for i,text_mensage in enumerate(response):
             
             if (i % 2 == 0):
-                message(userquestion, is_user=True, key=str(i) + '_user')
+                message(text_mensage.content, is_user=True, key=str(i) + '_user')
             else:
-                message(response.content, is_user=False, key=str(i) + '_bot')
+                message(text_mensage.content, is_user=False, key=str(i) + '_bot')
 
     with st.sidebar:
         st.subheader('arquivos')
@@ -37,4 +40,5 @@ def main():
 
 
 if __name__ == '__main__':
+    load_dotenv('/home/albertmoren/Desktop/LLM_chatbot/.env')
     main()

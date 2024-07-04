@@ -5,7 +5,7 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 
 
-def creat_vectorstore(chunks):
+def create_vectorstore(chunks):
     embeddings = HuggingFaceInstructEmbeddings(moodel_name = "WhereIsAI/UAE-Large-V1")
     vectorstore = FAISS.from_text(texts=chunks, embedding = embeddings)
 
