@@ -1,28 +1,20 @@
 from PyPDF2 import PdfReader
-from langchain_text_splitters import CharacterTextSplitter #particionar um texto maior em chunks de texto
-
+from langchain_text_splitters import CharacterTextSplitter
 
 def process_files(files):
-
     text = ""
-
     for file in files:
         pdf = PdfReader(file)
-        
         for page in pdf.pages:
             text += page.extract_text()
-    
     return text
 
-
-def creat_text_chunks(text):
-    text_spliter = CharacterTextSplitter(
+def create_text_chunks(text):
+    text_splitter = CharacterTextSplitter(
         separator='\n',
         chunk_size=1500,
         chunk_overlap=300,
-        length_function = len
+        length_function=len
     )
-
-    chunks = text_spliter.split_text(text)
-
+    chunks = text_splitter.split_text(text)
     return chunks
