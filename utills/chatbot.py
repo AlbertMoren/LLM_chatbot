@@ -1,17 +1,17 @@
 from langchain.embeddings import HuggingFaceInstructEmbeddings
 from langchain.llms import HuggingFaceHub
-from langchain.vectorstores import FAISS
+from langchain.vectorstores import Chroma
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 
 def create_vectorstore(chunks):
-    embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-large")
-    vectorstore = FAISS.from_texts(texts=chunks, embedding=embeddings)
+    embeddings = HuggingFaceInstructEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+    vectorstore = Chroma.from_documents(chunks, embeddings)
     return vectorstore
 
 def create_conversation(vectorstore):
     llm = HuggingFaceHub(repo_id='google/flan-t5-large', huggingfacehub_api_token='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', model_kwargs={
-    "max_length": 512,
+    "max_length": 200,
     "temperature": 0.1
 })
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)

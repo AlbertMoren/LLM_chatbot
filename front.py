@@ -7,12 +7,12 @@ def main():
     st.set_page_config(page_title="Pergunte para seus PDFs", page_icon=':books:')
     st.header("LLM em PDF")
 
-    directory = "./pdfs"
+    
 
     if 'conversation' not in st.session_state:
         st.session_state.conversation = None
 
-    all_files_text = text.process_files(directory)
+    all_files_text = text.process_files()
     chunks = text.create_text_chunks(all_files_text)
     vectorstore = chatbot.create_vectorstore(chunks)
     st.session_state.conversation = chatbot.create_conversation(vectorstore)
