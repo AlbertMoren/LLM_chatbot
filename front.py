@@ -7,11 +7,6 @@ def main():
     st.set_page_config(page_title="Pergunte para seus PDFs", page_icon=':books:')
     st.header("LLM em PDF")
 
-    
-
-    if 'conversation' not in st.session_state:
-        st.session_state.conversation = None
-
     all_files_text = text.process_files()
     chunks = text.create_text_chunks(all_files_text)
     vectorstore = chatbot.create_vectorstore(chunks)
@@ -20,7 +15,10 @@ def main():
 
     userquestion = st.chat_input("Faça uma pergunta:")
 
-    if userquestion and st.session_state.conversation:
+    if 'conversation' not in st.session_state:
+        st.session_state.conversation = None
+        
+    if (userquestion):
         response = st.session_state.conversation(userquestion)['chat_history']
         for i, text_message in enumerate(response):
             if i % 2 == 0:

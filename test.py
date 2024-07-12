@@ -1,27 +1,25 @@
-from PyPDF2 import PdfReader
-from langchain_text_splitters import CharacterTextSplitter, RecursiveCharacterTextSplitter
-from langchain.document_loaders import PyPDFDirectoryLoader
+from transformers import AutoTokenizer, AutoModelForCausalLM
+import transformers
+import torch
 
+model = "tiiuae/falcon-7b"
 
-def process_files():
-    loader = PyPDFDirectoryLoader(
-    "./pdfs"
-    )
-    text = loader.load()
-    
-    return text
-
-def create_text_chunks(text):
-    text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size = 500,
-    chunk_overlap = 20,
-    length_function = len,
-    )
-    
-    chunks = text_splitter.split_documents(text)
-    print(len(chunks)) # 11
-    print(chunks[20])
-    return chunks
-
-text = process_files()
-create_text_chunks(text)
+tokenizer = AutoTokenizer.from_pretrained(model)
+pipeline = transformers.pipeline(
+    "text-generation",
+    model=model,
+    tokenizer=tokenizer,
+    torch_dtype=torch.bfloat16,
+    trust_remote_code=True,
+    device_map="auto",
+)
+sequences = pipeline(
+   "Girafatron is obsessed with giraffes, the most glorious animal on the face of this Earth. Giraftron believes all other animals are irrelevant when compared to the glorious majesty of the giraffe.\nDaniel: Hello, Girafatron!\nGirafatron:",
+    max_length=200,
+    do_sample=True,
+    top_k=10,
+    num_return_sequences=1,
+    eos_token_id=tokenizer.eos_token_id,
+)
+for seq in sequences:
+    print(f"Result: {seq['generated_text']}")

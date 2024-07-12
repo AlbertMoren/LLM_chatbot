@@ -12,8 +12,8 @@ def process_files():
 
 def create_text_chunks(text):
     text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size = 500,
-    chunk_overlap = 20
+    chunk_size = 1500,
+    chunk_overlap = 300
     )
     chunks = text_splitter.split_documents(text)
     return chunks
