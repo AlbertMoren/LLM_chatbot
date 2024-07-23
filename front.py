@@ -18,7 +18,7 @@ def main():
     if 'conversation' not in st.session_state:
         st.session_state.conversation = None
         
-    if (userquestion):
+    if userquestion:
         response = st.session_state.conversation(userquestion)['chat_history']
         for i, text_message in enumerate(response):
             if i % 2 == 0:
