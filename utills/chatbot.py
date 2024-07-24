@@ -1,9 +1,9 @@
 from langchain.embeddings import HuggingFaceInstructEmbeddings
-from langchain.llms import HuggingFaceHub,Ollama
+from langchain.llms import Ollama
 from langchain.vectorstores import Chroma
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
-from langchain.prompts import PromptTemplate,SystemMessagePromptTemplate,HumanMessagePromptTemplate,ChatPromptTemplate
+from langchain.prompts import SystemMessagePromptTemplate,HumanMessagePromptTemplate,ChatPromptTemplate
 
 
 def create_vectorstore(chunks):
@@ -13,23 +13,23 @@ def create_vectorstore(chunks):
     return vectorstore
 
 def create_conversation(vectorstore):
-    # general_system_template = """
-    # Você é um assistente virtual, que responde exclusivamente em português sobre os conteúdos dos PDFs armazenados.
-    # Use o contexto fornecido para responder à pergunta de forma clara e concisa.
-    # Se e pergunta for fora do contexto dos PDFs, responda que não pode responder fora do tópico.:
+    general_system_template = """
+    Você é um assistente virtual, que responde exclusivamente em português sobre os conteúdos dos PDFs armazenados.
+    Use o contexto fornecido para responder à pergunta de forma clara e concisa.
+    Se e pergunta for fora do contexto dos PDFs, responda que não pode responder fora do tópico.:
 
-    # {context}
+    {context}
 
-    # ---
+    ---
 
-    # Answer the question based on the above context: {question}
-    # """
-    # general_user_template = "Question:```{question}```"
-    # messages = [
-    #             SystemMessagePromptTemplate.from_template(general_system_template),
-    #             HumanMessagePromptTemplate.from_template(general_user_template)
-    # ]
-    # qa_prompt = ChatPromptTemplate.from_messages( messages )
+    Answer the question based on the above context: {question}
+    """
+    general_user_template = "Question:```{question}```"
+    messages = [
+                SystemMessagePromptTemplate.from_template(general_system_template),
+                HumanMessagePromptTemplate.from_template(general_user_template)
+    ]
+    qa_prompt = ChatPromptTemplate.from_messages( messages )
 
     llm = Ollama(model="llama3",temperature= 0.1)
 
