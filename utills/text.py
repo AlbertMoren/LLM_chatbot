@@ -1,20 +1,19 @@
-from PyPDF2 import PdfReader
-from langchain_text_splitters import CharacterTextSplitter
+from langchain_text_splitters import  RecursiveCharacterTextSplitter
+from langchain.document_loaders import PyPDFDirectoryLoader
 
-def process_files(files):
-    text = ""
-    for file in files:
-        pdf = PdfReader(file)
-        for page in pdf.pages:
-            text += page.extract_text()
+
+def process_files():
+    loader = PyPDFDirectoryLoader(
+    "./pdfs"
+    )
+    text = loader.load()
+    
     return text
 
 def create_text_chunks(text):
-    text_splitter = CharacterTextSplitter(
-        separator='\n',
-        chunk_size=1500,
-        chunk_overlap=300,
-        length_function=len
+    text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size = 1500,
+    chunk_overlap = 300,
     )
-    chunks = text_splitter.split_text(text)
+    chunks = text_splitter.split_documents(text)
     return chunks
