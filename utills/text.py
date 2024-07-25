@@ -10,6 +10,7 @@ def process_files(files):
     return text
 
 def create_text_chunks(text):
+    print(text)
     text_splitter = CharacterTextSplitter(
         separator='\n',
         chunk_size=1500,
@@ -17,4 +18,4 @@ def create_text_chunks(text):
         length_function=len
     )
     chunks = text_splitter.split_text(text)
-    return chunks
+    return text_splitter.create_documents(chunks)
