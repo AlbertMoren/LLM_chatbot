@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_chat import message
-from utills  import chatbot
-from utills import text
+import chatbot
+import text
 
 
 def main():
